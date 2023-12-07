@@ -20,8 +20,8 @@ public class HomePageTest extends BaseTest{
 	@Test(priority = 1)
 	public void homePageTitleTest() {
 		String actTitle = homePage.getHomePageTitle();
-		homePage.getTilesNumFromHomePage();
-		homePage.printNameAndClickTilesFromHomePage();
+		homePage.getLinksNumFromHomePage();
+		homePage.printNameAndClickLinkFromHomePage();
 		Assert.assertEquals(actTitle, AppConstants.LOGIN_PAGE_TITLE);
 
 	}

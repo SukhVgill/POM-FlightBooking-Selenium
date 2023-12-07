@@ -78,6 +78,21 @@ public class ElementUtil {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param locator
+	 */
+	public void waitForLinkReadyAndClickByText(String linkText) {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(AppConstants.MEDIUM_TIME_OUT));
+		try {
+			WebElement ele = wait.until(ExpectedConditions.elementToBeClickable(By.linkText(linkText)));
+			ele.click();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Link with text " + linkText + " is not present...");
+		}
+	}
+	
 	public int getElementsCount(By locator) {
 		return getElements(locator).size();
 	}

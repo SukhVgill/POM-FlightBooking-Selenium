@@ -43,9 +43,9 @@ public class HomePage {
 	 * 
 	 * @return
 	 */
-	public int getTilesNumFromHomePage() {
-		int tileNum = eleUtil.getElementsCount(By.xpath("//h5"));
-		System.out.println("Total " + tileNum + " tiles available on Home Page.");
+	public int getLinksNumFromHomePage() {
+		int tileNum = eleUtil.getElementsCount(By.xpath("//a"));
+		System.out.println("Total " + tileNum + " links available on Home Page.");
 		return tileNum;
 	}
 
@@ -56,20 +56,20 @@ public class HomePage {
 	 * 
 	 * @return
 	 */
-	public void printNameAndClickTilesFromHomePage() {
-		List<String> eleList = eleUtil.getElementsTextList(By.xpath("//h5"));
-		System.out.println("List of Tiles available on Home Page : " + eleList);
+	public void printNameAndClickLinkFromHomePage() {
+		List<String> eleList = eleUtil.getElementsTextList(By.xpath("//a"));
+		System.out.println("List of Links available on Home Page : " + eleList);
 
-		for (String tileName : eleList) {
-			if (!tileName.isEmpty()) {
-				clickTilesFromHomePage(tileName.trim());
+		for (String linkName : eleList) {
+			if (!linkName.isEmpty()) {
+				clickLinksUsingText(linkName.trim());
 				eleUtil.goToBackPage();
 			}
 		}
 	}
 
 	/**
-	 * Pass Name of tile on home page to click it.
+	 * Pass Name of link on home page to click it.
 	 * 
 	 * @param nameOfTile
 	 */
@@ -77,5 +77,14 @@ public class HomePage {
 		String xpath = "//h5[text() = '" + nameOfTile + "']/..";
 		By tileEle = By.xpath(xpath);
 		eleUtil.waitForElementReadyAndClick(tileEle);
+	}
+	
+	/**
+	 * Pass Name of link on home page to click it.
+	 * 
+	 * @param nameOfTile
+	 */
+	public void clickLinksUsingText(String linkText) {
+		eleUtil.waitForLinkReadyAndClickByText(linkText);
 	}
 }
