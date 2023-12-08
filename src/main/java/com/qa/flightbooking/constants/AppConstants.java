@@ -6,7 +6,7 @@ import java.util.List;
 public class AppConstants {
 	
 	
-	public static final String LOGIN_PAGE_TITLE = "DEMOQA";
+	public static final String LOGIN_PAGE_TITLE = "Search for best Flights";
 	
 	public static final String USER_REGISTER_SUCCESS_MESSG = "Your Account Has Been Created!";
 

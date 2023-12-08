@@ -114,7 +114,7 @@ public class ExtentReportListener implements ITestListener {
 	public synchronized void onTestFailedButWithinSuccessPercentage(ITestResult result) {
 		System.out.println(("onTestFailedButWithinSuccessPercentage for " + result.getMethod().getMethodName()));
 	}
-
+	
 	private Date getTime(long millis) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(millis);

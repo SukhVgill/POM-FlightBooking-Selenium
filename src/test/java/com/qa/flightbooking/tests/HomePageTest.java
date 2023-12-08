@@ -1,5 +1,5 @@
 package com.qa.flightbooking.tests;
-
+ 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -15,14 +15,20 @@ import io.qameta.allure.Story;
 @Story("US 001: Search for flight from home page")
 public class HomePageTest extends BaseTest{
 	
-	@Description("login page title test......")
+	@Description("Home page title.")
 	@Severity(SeverityLevel.NORMAL)
 	@Test(priority = 1)
 	public void homePageTitleTest() {
+		homePage.waitForProcessingElement();
 		String actTitle = homePage.getHomePageTitle();
-		homePage.getLinksNumFromHomePage();
-		homePage.printNameAndClickLinkFromHomePage();
 		Assert.assertEquals(actTitle, AppConstants.LOGIN_PAGE_TITLE);
-
+	}
+	
+	@Description("Available links on home page.")
+	@Severity(SeverityLevel.NORMAL)
+	@Test(priority = 2)
+	public void linksOnHomepageTest() {
+		homePage.getLinksNumFromHomePage();
+		homePage.printAllLinksAvailableOnHomePage();
 	}
 }

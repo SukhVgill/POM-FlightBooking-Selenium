@@ -31,9 +31,8 @@ public class HomePage {
 
 	// Page Methods
 
-	@Step("....getting login page title....")
 	public String getHomePageTitle() {
-		String title = eleUtil.waitForTitleIs(AppConstants.LOGIN_PAGE_TITLE, AppConstants.SHORT_TIME_OUT);
+		String title = eleUtil.waitForTitleIs(AppConstants.SHORT_TIME_OUT);
 		System.out.println("Home Page title is: " + title);
 		return title;
 	}
@@ -53,10 +52,22 @@ public class HomePage {
 	 * Provide list of all the tiles available on Home Page.
 	 * 
 	 * @return
+	 */
+	public void printAllLinksAvailableOnHomePage() {
+		List<String> eleList = eleUtil.getElementsTextList(By.xpath("//a"));
+		for (String linkName : eleList) {
+			if (!linkName.isEmpty()) {
+				System.out.println((eleList.indexOf(linkName)+1)+ " --> " + linkName);
+			}
+		}
+	}
+
+	/**
+	 * Provide list of all the tiles available on Home Page.
 	 * 
 	 * @return
 	 */
-	public void printNameAndClickLinkFromHomePage() {
+	public void clickAllClickableLinksAvailableOnHomePage() {
 		List<String> eleList = eleUtil.getElementsTextList(By.xpath("//a"));
 		System.out.println("List of Links available on Home Page : " + eleList);
 
@@ -78,7 +89,7 @@ public class HomePage {
 		By tileEle = By.xpath(xpath);
 		eleUtil.waitForElementReadyAndClick(tileEle);
 	}
-	
+
 	/**
 	 * Pass Name of link on home page to click it.
 	 * 
@@ -86,5 +97,9 @@ public class HomePage {
 	 */
 	public void clickLinksUsingText(String linkText) {
 		eleUtil.waitForLinkReadyAndClickByText(linkText);
+	}
+
+	public void waitForProcessingElement() {
+		eleUtil.waitForProcessingElementToDisappear();
 	}
 }
