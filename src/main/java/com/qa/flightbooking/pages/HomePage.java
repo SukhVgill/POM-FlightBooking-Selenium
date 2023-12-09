@@ -63,18 +63,25 @@ public class HomePage {
 	}
 
 	/**
-	 * Provide list of all the tiles available on Home Page.
+	 * Click all clickable links available on Home Page.
 	 * 
 	 * @return
 	 */
 	public void clickAllClickableLinksAvailableOnHomePage() {
 		List<String> eleList = eleUtil.getElementsTextList(By.xpath("//a"));
-		System.out.println("List of Links available on Home Page : " + eleList);
-
 		for (String linkName : eleList) {
 			if (!linkName.isEmpty()) {
-				clickLinksUsingText(linkName.trim());
-				eleUtil.goToBackPage();
+				if(eleUtil.ifElementClickable(By.linkText(linkName))) {
+					eleUtil.getElement(By.linkText(linkName)).click();
+					System.out.println("Link " + linkName + " clicked.");
+					eleUtil.isPageLoaded(AppConstants.LONG_TIME_OUT);
+					String title = eleUtil.waitForTitleIs(AppConstants.SHORT_TIME_OUT);
+					System.out.println("Title of Page is :" + title);
+					//eleUtil.goToBackPage();
+				}
+				else {
+					System.out.println("Link " + linkName + " is not clickable.");
+				}
 			}
 		}
 	}
@@ -82,12 +89,10 @@ public class HomePage {
 	/**
 	 * Pass Name of link on home page to click it.
 	 * 
-	 * @param nameOfTile
+	 * @param Link Text
 	 */
-	public void clickTilesFromHomePage(String nameOfTile) {
-		String xpath = "//h5[text() = '" + nameOfTile + "']/..";
-		By tileEle = By.xpath(xpath);
-		eleUtil.waitForElementReadyAndClick(tileEle);
+	public void clickLinkOnPage(String linkText) {
+		eleUtil.waitForElementReadyAndClick(By.linkText(linkText));
 	}
 
 	/**

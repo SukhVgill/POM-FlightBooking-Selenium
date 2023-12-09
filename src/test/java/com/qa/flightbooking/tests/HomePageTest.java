@@ -31,4 +31,14 @@ public class HomePageTest extends BaseTest{
 		homePage.getLinksNumFromHomePage();
 		homePage.printAllLinksAvailableOnHomePage();
 	}
+	
+	@Description("Provide list of all feature flights.")
+	@Severity(SeverityLevel.NORMAL)
+	@Test(priority = 3)
+	public void listOfAllFeatureFlights() {
+		homePage.getLinksNumFromHomePage();
+		homePage.printAllLinksAvailableOnHomePage();
+	}
+	
+	
 }
