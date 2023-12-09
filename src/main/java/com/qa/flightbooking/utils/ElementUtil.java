@@ -173,6 +173,23 @@ public class ElementUtil {
 	}
 	
 	/**
+	 * wait until clickable element available.
+	 * @param locator
+	 * @return
+	 */
+	public boolean ifElementClickable(By locator) {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(AppConstants.MEDIUM_TIME_OUT));
+		try {
+			wait.until(ExpectedConditions.elementToBeClickable(locator));
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+
+	}
+	
+	/**
 	 * wait until provided element disappear.
 	 * @param locator
 	 * @return
