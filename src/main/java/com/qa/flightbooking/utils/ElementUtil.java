@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -36,17 +37,14 @@ public class ElementUtil {
 	 * @return String title of page
 	 */
 	public String waitForTitleIs(int timeOut) {
-		if(isPageLoaded(timeOut)) {
+		if (isPageLoaded(timeOut)) {
 			String title = driver.getTitle();
 			return title;
-		}
-		else {
+		} else {
 			String errorMsg = "ERROR: Page Load taking longer.";
 			System.out.println(errorMsg);
 			return errorMsg;
 		}
-		
-		
 	}
 
 	/**
@@ -65,6 +63,7 @@ public class ElementUtil {
 
 	/**
 	 * Wait until provided element is ready to be clicked.
+	 * 
 	 * @param locator
 	 */
 	public void waitForElementReadyAndClick(By locator) {
@@ -77,9 +76,10 @@ public class ElementUtil {
 			System.out.println(locator + " : Element is not present...");
 		}
 	}
-	
+
 	/**
 	 * Wait until provided link is ready to be clicked.
+	 * 
 	 * @param locator
 	 */
 	public void waitForLinkReadyAndClickByText(String linkText) {
@@ -92,9 +92,60 @@ public class ElementUtil {
 			System.out.println("Link with text " + linkText + " is not present...");
 		}
 	}
-	
+
+	/**
+	 * Wait until provided element is ready to be clicked.
+	 * 
+	 * @param locator
+	 */
+	public void waitForElementReadyAndSendKeys(By locator, String text) {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(AppConstants.MEDIUM_TIME_OUT));
+		try {
+			WebElement ele = wait.until(ExpectedConditions.elementToBeClickable(locator));
+			ele.sendKeys(text);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(locator + " : Element is not present...");
+		}
+	}
+
+	/**
+	 * Wait until provided element is ready to be clicked.
+	 * 
+	 * @param locator
+	 */
+	public void waitForElementReadyClickAndSendKeys(By locator, String text) {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(AppConstants.MEDIUM_TIME_OUT));
+		try {
+			WebElement ele = wait.until(ExpectedConditions.elementToBeClickable(locator));
+			ele.click();
+			ele.sendKeys(text);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(locator + " : Element is not present...");
+		}
+	}
+
+	/**
+	 * Wait until provided element is ready to be clicked.
+	 * 
+	 * @param locator
+	 */
+	public void waitForElementReadySendKeysAndClickTab(By locator, String text) {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(AppConstants.MEDIUM_TIME_OUT));
+		try {
+			WebElement ele = wait.until(ExpectedConditions.elementToBeClickable(locator));
+			ele.sendKeys(text);
+			ele.sendKeys(Keys.TAB);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(locator + " : Element is not present...");
+		}
+	}
+
 	/**
 	 * return number of similar elements available on page.
+	 * 
 	 * @param locator
 	 * @return
 	 */
@@ -104,15 +155,17 @@ public class ElementUtil {
 
 	/**
 	 * List of all the elements available on page.
+	 * 
 	 * @param locator
 	 * @return
 	 */
 	public List<WebElement> getElements(By locator) {
 		return driver.findElements(locator);
 	}
-	
+
 	/**
 	 * Get list as text for elements.
+	 * 
 	 * @param locator
 	 * @return
 	 */
@@ -127,23 +180,25 @@ public class ElementUtil {
 		}
 		return eleTextList;
 	}
-	
+
 	/**
 	 * Check if page loaded properly.
+	 * 
 	 * @param timeOut
 	 * @return boolean
 	 */
 	public boolean isPageLoaded(int timeOut) {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeOut));
-		String flag = wait.until(ExpectedConditions.jsReturnsValue("return document.readyState == 'complete'")).toString();
+		String flag = wait.until(ExpectedConditions.jsReturnsValue("return document.readyState == 'complete'"))
+				.toString();
 		return Boolean.parseBoolean(flag);
 	}
-	
+
 	/**
 	 * Navigate to back page.
 	 */
 	public void goToBackPage() {
-		if(isPageLoaded(AppConstants.LONG_TIME_OUT)) {
+		if (isPageLoaded(AppConstants.LONG_TIME_OUT)) {
 			driver.navigate().back();
 		}
 	}
@@ -154,9 +209,10 @@ public class ElementUtil {
 	public void waitForProcessingElementToDisappear() {
 		waitForElementToDisappear(By.xpath("//div[@class='rotatingDiv']"));
 	}
-	
+
 	/**
 	 * wait until clickable element available.
+	 * 
 	 * @param locator
 	 * @return
 	 */
@@ -171,9 +227,10 @@ public class ElementUtil {
 		}
 		return ele;
 	}
-	
+
 	/**
 	 * wait until clickable element available.
+	 * 
 	 * @param locator
 	 * @return
 	 */
@@ -188,9 +245,10 @@ public class ElementUtil {
 		}
 
 	}
-	
+
 	/**
 	 * wait until provided element disappear.
+	 * 
 	 * @param locator
 	 * @return
 	 */
@@ -205,10 +263,17 @@ public class ElementUtil {
 		}
 		return eleDisappeared;
 	}
-	
-	
-	//***************************PrintForReports*************************//
 
-	
+	// ***************************PrintForReports*************************//
+
+	// ***************************Thread.sleep*************************//
+
+	public void waitPlease(int waitTime) {
+		try {
+			Thread.sleep(waitTime);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 
 }

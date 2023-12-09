@@ -1,5 +1,6 @@
 package com.qa.flightbooking.pages;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -23,14 +24,21 @@ public class HomePage {
 	}
 
 	// 1. Page Locators
-	private By elementTile = By.xpath("//h5[text() = 'Elements']/..");
-	private By password = By.id("input-password");
-	private By loginBtn = By.xpath("//input[@value='Login']");
-	private By forgotPwdLink = By.linkText("Forgotten Password");
-	private By registerLink = By.linkText("Register");
-
+	private By div_FeatureFlights = By.xpath("//div[@class='col-lg-4 responsive-column']");
+	private By radioButton_OneWay = By.xpath("//input[@id='one-way']");
+	private By radioButton_RoundTrip = By.xpath("//input[@id='round-trip']");
+	private By dropdown_FromCity = By.xpath("//div[@class='input-items from_flights']//b[@role='presentation']");
+	private By enter_City = By.xpath("//span[@class='select2-search select2-search--dropdown']//input[@class='select2-search__field']");
+	private By dropdown_DestinationCity = By.xpath("//div[@class='input-items flights_arrival to_flights']//span[@class='select2-selection__arrow']");
+	private By enter_DepartureDate = By.xpath("//input[@id='departure'][1]");
+	private By button_Search = By.xpath("//button[@id='flights-search']");
+	
 	// Page Methods
 
+	/**
+	 * Print home page title
+	 * @return String title
+	 */
 	public String getHomePageTitle() {
 		String title = eleUtil.waitForTitleIs(AppConstants.SHORT_TIME_OUT);
 		System.out.println("Home Page title is: " + title);
@@ -50,16 +58,20 @@ public class HomePage {
 
 	/**
 	 * Provide list of all the tiles available on Home Page.
+	 * @return 
 	 * 
 	 * @return
 	 */
-	public void printAllLinksAvailableOnHomePage() {
+	public List<String> getAllLinksAvailableOnHomePage() {
+		List<String> list = new ArrayList<String>();
 		List<String> eleList = eleUtil.getElementsTextList(By.xpath("//a"));
 		for (String linkName : eleList) {
 			if (!linkName.isEmpty()) {
-				System.out.println((eleList.indexOf(linkName)+1)+ " --> " + linkName);
+				//System.out.println((eleList.indexOf(linkName) + 1) + " --> " + linkName);
+				list.add(linkName);
 			}
 		}
+		return list;
 	}
 
 	/**
@@ -71,19 +83,71 @@ public class HomePage {
 		List<String> eleList = eleUtil.getElementsTextList(By.xpath("//a"));
 		for (String linkName : eleList) {
 			if (!linkName.isEmpty()) {
-				if(eleUtil.ifElementClickable(By.linkText(linkName))) {
+				if (eleUtil.ifElementClickable(By.linkText(linkName))) {
 					eleUtil.getElement(By.linkText(linkName)).click();
 					System.out.println("Link " + linkName + " clicked.");
 					eleUtil.isPageLoaded(AppConstants.LONG_TIME_OUT);
 					String title = eleUtil.waitForTitleIs(AppConstants.SHORT_TIME_OUT);
 					System.out.println("Title of Page is :" + title);
-					//eleUtil.goToBackPage();
-				}
-				else {
+					// eleUtil.goToBackPage();
+				} else {
 					System.out.println("Link " + linkName + " is not clickable.");
 				}
 			}
 		}
+	}
+
+	/**
+	 * This will provide list of all featured flights available on Home Page.
+	 * 
+	 * @return
+	 */
+	public List<String> getListOfAllFeaturedFlights() {
+
+		String fromCity = null;
+		String toCity = null;
+		String price = null;
+		List<String> allFeaturedFlights = new ArrayList<String>();
+
+		List<WebElement> eleFeatureFlights = eleUtil.getElements(div_FeatureFlights);
+		for (int i = 1; i <= eleFeatureFlights.size(); i++) {
+			// Get Price
+			String xpathPrice = "//div[@class='col-lg-4 responsive-column'][" + i
+					+ "]//span[@class='price__num flex-grow-1 text-center d-block']";
+			price = eleUtil.getElement(By.xpath(xpathPrice)).getText();
+
+			// Get From and to city name
+			String xpathCities = "//div[@class='col-lg-4 responsive-column'][" + i + "]//span[@class='h6']";
+			List<WebElement> citiesName = eleUtil.getElements(By.xpath(xpathCities));
+			for (int j = 1; j <= citiesName.size(); j++) {
+				String xpathCity = "//div[@class='col-lg-4 responsive-column'][" + i + "]//span[@class='h6'][" + j
+						+ "]";
+				String city = eleUtil.getElement(By.xpath(xpathCity)).getText();
+				if (j == 1) {
+					fromCity = city;
+				}
+				if (j == 2) {
+					toCity = city;
+				}
+			}
+			allFeaturedFlights.add(fromCity + " TO " + toCity + " " + price);
+			//System.out.println(fromCity + " TO " + toCity + " " + price);
+		}
+		return allFeaturedFlights;
+
+	}
+	
+	public void oneWayFlightSearch(String fromCity, String destinationCity, String date) {
+		eleUtil.isPageLoaded(AppConstants.LONG_TIME_OUT);
+		waitForProcessingElement();
+		eleUtil.waitForElementReadyAndClick(radioButton_OneWay);
+		eleUtil.waitForElementReadyAndClick(dropdown_FromCity);
+		eleUtil.waitForElementReadySendKeysAndClickTab(enter_City, fromCity);
+		eleUtil.waitForElementReadyAndClick(dropdown_DestinationCity);
+		eleUtil.waitForElementReadySendKeysAndClickTab(enter_City, destinationCity);
+		eleUtil.waitForElementReadySendKeysAndClickTab(enter_DepartureDate, date);
+		eleUtil.waitForElementReadyAndClick(button_Search);
+		eleUtil.waitPlease(10000);
 	}
 
 	/**
